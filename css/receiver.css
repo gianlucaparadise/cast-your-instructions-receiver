@@ -1,0 +1,43 @@
+html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#app {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    text-align: center;
+}
+
+#app > div.container {
+    max-width: 50%;
+    width: 50%;
+}
+
+#col-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+#col-2 > div.container {
+    max-height: 50%;
+    height: 50%;
+}
+
+.line {
+    background-color: black;
+}
+
+.line.vertical {
+    width: 10px;
+}
+
+.line.horizontal {
+    height: 10px;
+}

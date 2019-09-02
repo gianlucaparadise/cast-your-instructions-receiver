@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/receiver.css" media="screen" />
+    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
+    </script>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="container">
+
+            <div id="instructions-container">
+                <h1>Intructions</h1>
+            </div>
+
+        </div>
+
+        <div class="line vertical"></div>
+
+        <div id="col-2" class="container">
+
+            <div id="countdown" class="container">
+                <h1>Countdown</h1>
+            </div>
+
+            <div class="line horizontal"></div>
+
+            <div id="video" class="container">
+                <h1>Video</h1>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <script src="js/receiver.js" type="module"></script>
+    </footer>
+</body>
+
+</html>

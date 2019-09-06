@@ -21,13 +21,14 @@
                 <h1>{{ title }}</h1>
 
                 <ol>
-                    <step-item v-for="step in instructions" v-bind:step="step">
+                    <step-item v-for="(step, index) in instructions" v-bind:step="step"
+                        v-bind:selected="isSelected(index)">
                     </step-item>
                 </ol>
             </div>
 
             <div id="description" class="container">
-                <span>description</span>
+                <h2>{{ selectedDescription }}</h2>
             </div>
 
         </div>
@@ -38,12 +39,14 @@
 
             <div id="countdown" class="container">
                 <h1>Countdown</h1>
+                <h2>{{ selectedCountdown }}</h2>
             </div>
 
             <div class="line horizontal"></div>
 
             <div id="video" class="container">
                 <h1>Video</h1>
+                <h2>{{ selectedVideoUrl }}</h2>
             </div>
 
         </div>

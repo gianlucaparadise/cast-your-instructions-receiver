@@ -8,17 +8,25 @@ const log = (getLogContent) => {
     }
 }
 
+const store = {
+    state: {
+        selectedStepIndex: 0,
+    }
+}
+
 Vue.component('step-item', {
     props: [
-        'step'
+        'step',
+        'selected',
     ],
-    template: '<li>{{ step.name }}</li>',
+    template: '<li v-bind:class="{ selected: selected }">{{ step.name }}</li>',
 })
 
 var app = new Vue({
     el: '#app',
     data: {
-        trainingCard
+        trainingCard,
+        state: store.state,
     },
     computed: {
         title: function () {
@@ -27,7 +35,22 @@ var app = new Vue({
         instructions: function () {
             return this.trainingCard.instructions
         },
+        selectedStep: function () {
+            return this.trainingCard.instructions[this.state.selectedStepIndex];
+        },
+        selectedDescription: function () {
+            return this.selectedStep.description;
+        },
+        selectedCountdown: function () {
+            return this.selectedStep.countdown;
+        },
+        selectedVideoUrl: function () {
+            return this.selectedStep.videoUrl;
+        },
+    },
+    methods: {
+        isSelected: function (index) {
+            return this.state.selectedStepIndex === index;
+        }
     }
 })
-
-log(() => 'test');

@@ -15,10 +15,19 @@
 <body>
 
     <div id="app">
-        <div class="container">
+        <div id="col-1" class="container">
 
-            <div id="instructions-container">
-                <h1>Intructions</h1>
+            <div id="instructions" class="container">
+                <h1>{{ title }}</h1>
+
+                <ol>
+                    <step-item v-for="step in instructions" v-bind:step="step">
+                    </step-item>
+                </ol>
+            </div>
+
+            <div id="description" class="container">
+                <span>description</span>
             </div>
 
         </div>

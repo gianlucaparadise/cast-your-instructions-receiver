@@ -12,12 +12,27 @@ body {
     display: flex;
     height: 100%;
     flex-direction: row;
+}
+
+h1 {
     text-align: center;
 }
 
 #app > div.container {
     max-width: 50%;
     width: 50%;
+}
+
+#col-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+#description {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #col-2 {
@@ -40,4 +55,9 @@ body {
 
 .line.horizontal {
     height: 10px;
+}
+
+.selected {
+    color: red;
+    font-weight: bold;
 }

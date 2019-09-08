@@ -8,19 +8,68 @@ const log = (getLogContent) => {
     }
 }
 
+let countdownInterval; // this is a number representing the interval id
+
 const store = {
     state: {
-        selectedStepIndex: 0,
+        selectedStepIndex: -1,
+        countdownTime: -1,
     },
+
+    getSelectedStep: function () {
+        if (this.state.selectedStepIndex < 0 || this.state.selectedStepIndex >= trainingCard.instructions.length) {
+            return null;
+        }
+
+        return trainingCard.instructions[this.state.selectedStepIndex];
+    },
+
+    start: function () {
+        this.state.selectedStepIndex = -1; // nextStep will start from 0
+        if (countdownInterval) clearInterval(countdownInterval);
+        this.nextStep();
+    },
+    stop: function () {
+        this.state.selectedStepIndex = -1;
+        this.state.countdownTime = -1;
+        if (countdownInterval) clearInterval(countdownInterval);
+    },
+
     nextStep: function () {
         if (this.state.selectedStepIndex >= trainingCard.instructions.length - 1) {
             log(() => 'reached end of list');
+            this.stop();
             return false;
         }
 
         log(() => 'increasing step');
         this.state.selectedStepIndex += 1;
+
+        this.startCountdown();
+
         return true;
+    },
+
+    startCountdown: function () {
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        const selectedCountdown = this.getSelectedStep().countdown;
+        this.state.countdownTime = selectedCountdown;
+        countdownInterval = setInterval(() => {
+
+            if (this.state.countdownTime <= 0) {
+                this.stopCountdown();
+                this.nextStep();
+                return;
+            }
+
+            log(() => 'decreasing countdown');
+            this.state.countdownTime -= 1;
+
+        }, 1000);
+    },
+    stopCountdown: function () {
+        if (countdownInterval) clearInterval(countdownInterval);
     },
 }
 
@@ -45,17 +94,29 @@ var app = new Vue({
         instructions: function () {
             return this.trainingCard.instructions
         },
-        selectedStep: function () {
-            return this.trainingCard.instructions[this.state.selectedStepIndex];
-        },
         selectedDescription: function () {
-            return this.selectedStep.description;
+            const selectedStep = store.getSelectedStep();
+            if (!selectedStep) {
+                return '';
+            }
+
+            return selectedStep.description;
         },
-        selectedCountdown: function () {
-            return this.selectedStep.countdown;
+        countdownTime: function () {
+            const countdownTime = this.state.countdownTime;
+            if (countdownTime < 0) {
+                return '';
+            }
+
+            return countdownTime;
         },
         selectedVideoUrl: function () {
-            return this.selectedStep.videoUrl;
+            const selectedStep = store.getSelectedStep();
+            if (!selectedStep) {
+                return '';
+            }
+
+            return selectedStep.videoUrl;
         },
     },
     methods: {
@@ -65,12 +126,4 @@ var app = new Vue({
     }
 });
 
-const interval = setInterval(() => {
-    const hasIncreased = store.nextStep();
-
-    if (!hasIncreased) {
-        log(() => 'Stopping interval');
-        clearInterval(interval);
-    }
-
-}, 2000);
+setTimeout(() => store.start(), 2000);

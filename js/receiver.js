@@ -11,7 +11,17 @@ const log = (getLogContent) => {
 const store = {
     state: {
         selectedStepIndex: 0,
-    }
+    },
+    nextStep: function () {
+        if (this.state.selectedStepIndex >= trainingCard.instructions.length - 1) {
+            log(() => 'reached end of list');
+            return false;
+        }
+
+        log(() => 'increasing step');
+        this.state.selectedStepIndex += 1;
+        return true;
+    },
 }
 
 Vue.component('step-item', {
@@ -53,4 +63,14 @@ var app = new Vue({
             return this.state.selectedStepIndex === index;
         }
     }
-})
+});
+
+const interval = setInterval(() => {
+    const hasIncreased = store.nextStep();
+
+    if (!hasIncreased) {
+        log(() => 'Stopping interval');
+        clearInterval(interval);
+    }
+
+}, 2000);

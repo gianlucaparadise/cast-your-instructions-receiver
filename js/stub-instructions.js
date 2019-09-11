@@ -1,4 +1,4 @@
-const trainingCard = {
+const recipe = {
     title: 'How to cook pasta',
     source: 'https://blog.giallozafferano.it/paola67/how-to-cook-pasta/',
     instructions: [
@@ -42,5 +42,5 @@ const trainingCard = {
 };
 
 export {
-    trainingCard
+    recipe
 };

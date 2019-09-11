@@ -102,13 +102,13 @@ var app = new Vue({
 
             return selectedStep.description;
         },
-        countdownTime: function () {
-            const countdownTime = this.state.countdownTime;
-            if (countdownTime < 0) {
+        selectedDuration: function () {
+            const selectedStep = store.getSelectedStep();
+            if (!selectedStep) {
                 return '';
             }
 
-            return countdownTime;
+            return `${selectedStep.countdown} seconds`;
         },
         selectedVideoUrl: function () {
             const selectedStep = store.getSelectedStep();
@@ -117,6 +117,14 @@ var app = new Vue({
             }
 
             return selectedStep.videoUrl;
+        },
+        countdownTime: function () {
+            const countdownTime = this.state.countdownTime;
+            if (countdownTime < 0) {
+                return '';
+            }
+
+            return countdownTime;
         },
     },
     methods: {

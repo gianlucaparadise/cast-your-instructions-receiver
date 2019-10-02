@@ -21,14 +21,18 @@ const store = {
 
         return this.state.recipe.instructions[this.state.selectedStepIndex];
     },
-
-    start: function (recipe) {
+    load: function (recipe) {
         this.state.selectedStepIndex = -1; // nextStep will start from 0
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
 
         this.state.recipe = recipe;
+    },
+    play: function () {
         this.nextStep();
+    },
+    pause: function () {
+        if (countdownInterval) clearInterval(countdownInterval);
     },
     stop: function () {
         this.state.selectedStepIndex = -1;
@@ -148,10 +152,36 @@ var app = new Vue({
         isSelected: function (index) {
             return this.state.selectedStepIndex === index;
         },
-        start: function (recipe) {
-            log(() => `Starting application with:`);
+        load: function (recipe) {
+            log(() => `Loading application with:`);
             log(() => recipe);
-            store.start(recipe);
+            store.load(recipe);
+        },
+        play: function () {
+            const recipe = this.state.recipe;
+            if (!recipe) {
+                log(() => `No recipe loaded`);
+                return;
+            }
+
+            log(() => `Playing recipe:`);
+            log(() => recipe);
+            store.play();
+        },
+        pause: function () {
+            const recipe = this.state.recipe;
+            if (!recipe) {
+                log(() => `No recipe loaded`);
+                return;
+            }
+
+            log(() => `Pausing recipe:`);
+            log(() => recipe);
+            store.pause();
+        },
+        stop: function () {
+            log(() => `Stopping`);
+            store.stop();
         }
     }
 });

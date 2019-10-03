@@ -1,6 +1,7 @@
 import { log } from "./logger.js";
 
 let countdownInterval; // this is a number representing the interval id
+let listener;
 
 const store = {
     state: {
@@ -27,17 +28,21 @@ const store = {
         if (countdownInterval) clearInterval(countdownInterval);
 
         this.state.recipe = recipe;
+        if (listener) listener.onLoad(recipe);
     },
     play: function () {
         this.nextStep();
+        if (listener) listener.onPlay(this.state.recipe);
     },
     pause: function () {
         if (countdownInterval) clearInterval(countdownInterval);
+        if (listener) listener.onPause(this.state.recipe);
     },
     stop: function () {
         this.state.selectedStepIndex = -1;
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
+        if (listener) listener.onStop(this.state.recipe);
     },
 
     nextStep: function () {
@@ -55,6 +60,7 @@ const store = {
 
         log(() => 'increasing step');
         this.state.selectedStepIndex += 1;
+        if (listener) listener.onSelectedInstruction(this.state.recipe, this.state.selectedStepIndex);
 
         this.startCountdown();
 
@@ -96,7 +102,7 @@ var app = new Vue({
     el: '#app',
     data: {
         state: store.state,
-        appDisplay: 'auto' // When the app is ready, it will read this style prop
+        appDisplay: 'auto', // When the app is ready, it will read this style prop
     },
     computed: {
         title: function () {
@@ -146,7 +152,7 @@ var app = new Vue({
             }
 
             return countdownTime;
-        },
+        }
     },
     methods: {
         isSelected: function (index) {
@@ -182,6 +188,9 @@ var app = new Vue({
         stop: function () {
             log(() => `Stopping`);
             store.stop();
+        },
+        setListener: function (delegate) {
+            listener = delegate;
         }
     }
 });

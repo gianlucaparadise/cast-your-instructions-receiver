@@ -5,54 +5,54 @@ let listener;
 
 const store = {
     state: {
-        recipe: null,
+        routine: null,
         selectedStepIndex: -1,
         countdownTime: -1,
     },
 
     getSelectedStep: function () {
-        const recipe = this.state.recipe;
-        if (!recipe) {
+        const routine = this.state.routine;
+        if (!routine) {
             return null;
         }
 
-        if (this.state.selectedStepIndex < 0 || this.state.selectedStepIndex >= this.state.recipe.instructions.length) {
+        if (this.state.selectedStepIndex < 0 || this.state.selectedStepIndex >= this.state.routine.instructions.length) {
             return null;
         }
 
-        return this.state.recipe.instructions[this.state.selectedStepIndex];
+        return this.state.routine.instructions[this.state.selectedStepIndex];
     },
-    load: function (recipe) {
+    load: function (routine) {
         this.state.selectedStepIndex = -1; // nextStep will start from 0
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
 
-        this.state.recipe = recipe;
-        if (listener) listener.onLoad(recipe);
+        this.state.routine = routine;
+        if (listener) listener.onLoad(routine);
     },
     play: function () {
         this.nextStep();
-        if (listener) listener.onPlay(this.state.recipe);
+        if (listener) listener.onPlay(this.state.routine);
     },
     pause: function () {
         if (countdownInterval) clearInterval(countdownInterval);
-        if (listener) listener.onPause(this.state.recipe);
+        if (listener) listener.onPause(this.state.routine);
     },
     stop: function () {
         this.state.selectedStepIndex = -1;
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
-        if (listener) listener.onStop(this.state.recipe);
+        if (listener) listener.onStop(this.state.routine);
     },
 
     nextStep: function () {
-        const recipe = this.state.recipe;
-        if (!recipe) {
+        const routine = this.state.routine;
+        if (!routine) {
             this.stop();
             return;
         }
 
-        if (this.state.selectedStepIndex >= this.state.recipe.instructions.length - 1) {
+        if (this.state.selectedStepIndex >= this.state.routine.instructions.length - 1) {
             log(() => 'reached end of list');
             this.stop();
             return false;
@@ -60,7 +60,7 @@ const store = {
 
         log(() => 'increasing step');
         this.state.selectedStepIndex += 1;
-        if (listener) listener.onSelectedInstruction(this.state.recipe, this.state.selectedStepIndex);
+        if (listener) listener.onSelectedInstruction(this.state.routine, this.state.selectedStepIndex);
 
         this.startCountdown();
 
@@ -106,20 +106,20 @@ var app = new Vue({
     },
     computed: {
         title: function () {
-            const recipe = this.state.recipe;
-            if (!recipe) {
+            const routine = this.state.routine;
+            if (!routine) {
                 return '';
             }
 
-            return this.state.recipe.title
+            return this.state.routine.title
         },
         instructions: function () {
-            const recipe = this.state.recipe;
-            if (!recipe) {
+            const routine = this.state.routine;
+            if (!routine) {
                 return '';
             }
 
-            return this.state.recipe.instructions
+            return this.state.routine.instructions
         },
         selectedDescription: function () {
             const selectedStep = store.getSelectedStep();
@@ -158,31 +158,31 @@ var app = new Vue({
         isSelected: function (index) {
             return this.state.selectedStepIndex === index;
         },
-        load: function (recipe) {
+        load: function (routine) {
             log(() => `Loading application with:`);
-            log(() => recipe);
-            store.load(recipe);
+            log(() => routine);
+            store.load(routine);
         },
         play: function () {
-            const recipe = this.state.recipe;
-            if (!recipe) {
-                log(() => `No recipe loaded`);
+            const routine = this.state.routine;
+            if (!routine) {
+                log(() => `No routine loaded`);
                 return;
             }
 
-            log(() => `Playing recipe:`);
-            log(() => recipe);
+            log(() => `Playing routine:`);
+            log(() => routine);
             store.play();
         },
         pause: function () {
-            const recipe = this.state.recipe;
-            if (!recipe) {
-                log(() => `No recipe loaded`);
+            const routine = this.state.routine;
+            if (!routine) {
+                log(() => `No routine loaded`);
                 return;
             }
 
-            log(() => `Pausing recipe:`);
-            log(() => recipe);
+            log(() => `Pausing routine:`);
+            log(() => routine);
             store.pause();
         },
         stop: function () {

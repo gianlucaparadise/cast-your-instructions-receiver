@@ -1,42 +1,42 @@
 import { log } from "./logger.js";
 import { app } from "./app.js";
-// import { recipe } from "./stub-instructions.js";
+// import { routine } from "./stub-instructions.js";
 
 const namespace = 'urn:x-cast:cast-your-instructions';
 
 app.setListener({
-    onLoad: function (recipe) {
+    onLoad: function (routine) {
         const message = {
             type: 'LOADED',
-            recipe: recipe
+            routine: routine
         };
         this.sendMessage(message);
     },
-    onPlay: function (recipe) {
+    onPlay: function (routine) {
         const message = {
             type: 'PLAYED',
-            recipe: recipe
+            routine: routine
         };
         this.sendMessage(message);
     },
-    onPause: function (recipe) {
+    onPause: function (routine) {
         const message = {
             type: 'PAUSED',
-            recipe: recipe
+            routine: routine
         };
         this.sendMessage(message);
     },
-    onStop: function (recipe) {
+    onStop: function (routine) {
         const message = {
             type: 'STOPPED',
-            recipe: recipe
+            routine: routine
         };
         this.sendMessage(message);
     },
-    onSelectedInstruction: function (recipe, selectedInstructionIndex) {
+    onSelectedInstruction: function (routine, selectedInstructionIndex) {
         const message = {
             type: 'SELECTED_INSTRUCTION',
-            recipe: recipe,
+            routine: routine,
             selectedInstructionIndex: selectedInstructionIndex
         };
         this.sendMessage(message);
@@ -53,11 +53,11 @@ context.addCustomMessageListener(namespace, event => {
     log(() => 'CustomMessage: ');
     log(() => event);
     const type = event.data.type;
-    const recipe = event.data.recipe;
+    const routine = event.data.routine;
 
     switch (type) {
         case 'LOAD':
-            app.load(recipe);
+            app.load(routine);
             break;
 
         case 'PLAY':

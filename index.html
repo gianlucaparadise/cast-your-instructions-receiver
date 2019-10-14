@@ -14,45 +14,51 @@
 
 <body>
 
-    <div id="app" style="display: none" v-bind:style="{ display: appDisplay }">
-        <div id="col-1" class="container">
-
-            <div id="instructions" class="container">
-                <h1>{{ title }}</h1>
-
-                <ol>
-                    <step-item v-for="(step, index) in instructions" v-bind:step="step"
-                        v-bind:selected="isSelected(index)">
-                    </step-item>
-                </ol>
-            </div>
-
-            <div id="description" class="container">
-                <h2>{{ selectedDescription }}</h2>
-            </div>
-
-            <div id="duration" class="container">
-                <h3>{{ selectedDuration }}</h2>
-            </div>
-
+    <div id="app">
+        <div id="welcome" v-bind:class="{ hidden: routine }">
+            <h1>Cast your Instructions</h1>
+            <h2>Select a routine to cast</h2>
         </div>
+        <div id="main">
+            <div id="col-1" class="container">
 
-        <div class="line vertical"></div>
+                <div id="instructions" class="container">
+                    <h1>{{ title }}</h1>
 
-        <div id="col-2" class="container">
+                    <ol>
+                        <step-item v-for="(step, index) in instructions" v-bind:step="step"
+                            v-bind:selected="isSelected(index)">
+                        </step-item>
+                    </ol>
+                </div>
 
-            <div id="countdown" class="container">
-                <h1>Countdown</h1>
-                <span id="countdownTime">{{ countdownTime }}</span>
+                <div id="description" class="container">
+                    <h2>{{ selectedDescription }}</h2>
+                </div>
+
+                <div id="duration" class="container">
+                    <h3>{{ selectedDuration }}</h2>
+                </div>
+
             </div>
 
-            <div class="line horizontal"></div>
+            <div class="line vertical"></div>
 
-            <div id="video" class="container">
-                <h1>Video</h1>
-                <h2>{{ selectedVideoUrl }}</h2>
+            <div id="col-2" class="container">
+
+                <div id="countdown" class="container">
+                    <h1>Countdown</h1>
+                    <span id="countdownTime">{{ countdownTime }}</span>
+                </div>
+
+                <div class="line horizontal"></div>
+
+                <div id="video" class="container">
+                    <h1>Video</h1>
+                    <h2>{{ selectedVideoUrl }}</h2>
+                </div>
+
             </div>
-
         </div>
 
     </div>

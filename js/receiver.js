@@ -1,37 +1,23 @@
 import { log } from "./logger.js";
-import { app } from "./app.js";
-// import { routine } from "./stub-instructions.js";
+import { app as view } from "./app.js";
+// import { routine as stubbedRoutine } from "./stub-instructions.js";
+
+let appState = 'IDLE';
 
 const namespace = 'urn:x-cast:cast-your-instructions';
 
-app.setListener({
-    onLoad: function (routine) {
+const appMessenger = {
+    onSendState: function (type, routine, senderId = null) {
+
+        // States are: 'LOADED', 'PLAYED', 'PAUSED', 'STOPPED'
+        appState = type;
+
         const message = {
-            type: 'LOADED',
+            type: type,
             routine: routine
         };
-        this.sendMessage(message);
-    },
-    onPlay: function (routine) {
-        const message = {
-            type: 'PLAYED',
-            routine: routine
-        };
-        this.sendMessage(message);
-    },
-    onPause: function (routine) {
-        const message = {
-            type: 'PAUSED',
-            routine: routine
-        };
-        this.sendMessage(message);
-    },
-    onStop: function (routine) {
-        const message = {
-            type: 'STOPPED',
-            routine: routine
-        };
-        this.sendMessage(message);
+
+        this.sendMessage(message, senderId);
     },
     onSelectedInstruction: function (routine, selectedInstructionIndex) {
         const message = {
@@ -41,12 +27,14 @@ app.setListener({
         };
         this.sendMessage(message);
     },
-    sendMessage: function (message) {
+    sendMessage: function (message, senderId) {
         log(() => `Sending message: ${message.type}`);
-        const senderId = undefined; // this broadcasts to all connected devices
+        senderId = !senderId ? undefined : senderId; // When senderId is undefined, this broadcasts to all connected devices
         context.sendCustomMessage(namespace, senderId, message);
     }
-});
+};
+
+view.setListener(appMessenger);
 
 const context = cast.framework.CastReceiverContext.getInstance();
 context.addCustomMessageListener(namespace, event => {
@@ -57,25 +45,42 @@ context.addCustomMessageListener(namespace, event => {
 
     switch (type) {
         case 'LOAD':
-            app.load(routine);
+            view.load(routine);
             break;
 
         case 'PLAY':
-            app.play();
+            view.play();
             break;
 
         case 'PAUSE':
-            app.pause();
+            view.pause();
             break;
 
         case 'STOP':
-            app.stop();
+            view.stop();
             break;
 
         default:
             break;
     }
 
+});
+
+context.addEventListener([
+    // system.EventType.READY, system.EventType.SHUTDOWN, system.EventType.SENDER_DISCONNECTED, system.EventType.ERROR, system.EventType.SYSTEM_VOLUME_CHANGED, system.EventType.VISIBILITY_CHANGED, system.EventType.STANDBY_CHANGED, system.EventType.FEEDBACK_STARTED,
+    cast.framework.system.EventType.SENDER_CONNECTED
+], (e) => {
+    log(() => `Event`);
+    log(() => e);
+    if (e.type === cast.framework.system.EventType.SENDER_CONNECTED) {
+        log(() => `SENDER_CONNECTED: ${e.senderId}`);
+        const routine = view.state.routine;
+
+        setTimeout(() => {
+            log(() => `SENDER_CONNECTED: Sending current state to connected device`);
+            appMessenger.onSendState(appState, routine, e.senderId)
+        }, 1000);
+    }
 });
 
 const playerManager = context.getPlayerManager();
@@ -96,3 +101,6 @@ playerManager.addEventListener(
 );
 
 context.start();
+
+// // This is to test locally
+// setTimeout(() => view.load(stubbedRoutine), 5000);

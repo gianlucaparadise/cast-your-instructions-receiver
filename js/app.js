@@ -28,21 +28,21 @@ const store = {
         if (countdownInterval) clearInterval(countdownInterval);
 
         this.state.routine = routine;
-        if (listener) listener.onLoad(routine);
+        if (listener) listener.onSendState('LOADED', routine);
     },
     play: function () {
         this.nextStep();
-        if (listener) listener.onPlay(this.state.routine);
+        if (listener) listener.onSendState('PLAYED', this.state.routine);
     },
     pause: function () {
         if (countdownInterval) clearInterval(countdownInterval);
-        if (listener) listener.onPause(this.state.routine);
+        if (listener) listener.onSendState('PAUSED', this.state.routine);
     },
     stop: function () {
         this.state.selectedStepIndex = -1;
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
-        if (listener) listener.onStop(this.state.routine);
+        if (listener) listener.onSendState('STOPPED', this.state.routine);
     },
 
     nextStep: function () {
@@ -105,6 +105,9 @@ var app = new Vue({
         appDisplay: 'auto', // When the app is ready, it will read this style prop
     },
     computed: {
+        routine: function () {
+            return this.state.routine;
+        },
         title: function () {
             const routine = this.state.routine;
             if (!routine) {

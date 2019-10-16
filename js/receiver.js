@@ -1,10 +1,12 @@
 import { log } from "./logger.js";
 import { app as view } from "./app.js";
-// import { routine as stubbedRoutine } from "./stub-instructions.js";
+import { Player } from "./player.js";
 
 let appState = 'IDLE';
 
 const namespace = 'urn:x-cast:cast-your-instructions';
+
+const player = new Player(document.querySelector("video"));
 
 const appMessenger = {
     onSendState: function (type, routine, senderId = null) {
@@ -28,6 +30,11 @@ const appMessenger = {
         this.sendMessage(message);
     },
     sendMessage: function (message, senderId) {
+        if (!context.isSystemReady()) {
+            log(() => `System not ready: cannot send message`);
+            return;
+        }
+
         log(() => `Sending message: ${message.type}`);
         senderId = !senderId ? undefined : senderId; // When senderId is undefined, this broadcasts to all connected devices
         context.sendCustomMessage(namespace, senderId, message);
@@ -46,18 +53,24 @@ context.addCustomMessageListener(namespace, event => {
     switch (type) {
         case 'LOAD':
             view.load(routine);
+
+            const videoName = routine.instructions[0].videoUrl;
+            player.load(videoName);
             break;
 
         case 'PLAY':
             view.play();
+            player.play();
             break;
 
         case 'PAUSE':
             view.pause();
+            player.pause();
             break;
 
         case 'STOP':
             view.stop();
+            player.stop();
             break;
 
         default:
@@ -103,4 +116,5 @@ playerManager.addEventListener(
 context.start();
 
 // // This is to test locally
+// import { routine as stubbedRoutine } from "./stub-instructions.js";
 // setTimeout(() => view.load(stubbedRoutine), 5000);

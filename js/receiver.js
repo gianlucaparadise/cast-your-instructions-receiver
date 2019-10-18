@@ -6,7 +6,10 @@ let appState = 'IDLE';
 
 const namespace = 'urn:x-cast:cast-your-instructions';
 
-const player = new Player(document.querySelector("video"));
+const context = cast.framework.CastReceiverContext.getInstance();
+const playerManager = context.getPlayerManager();
+
+const player = new Player(playerManager);
 
 const appMessenger = {
     onSendState: function (type, routine, senderId = null) {
@@ -43,7 +46,6 @@ const appMessenger = {
 
 view.setListener(appMessenger);
 
-const context = cast.framework.CastReceiverContext.getInstance();
 context.addCustomMessageListener(namespace, event => {
     log(() => 'CustomMessage: ');
     log(() => event);
@@ -95,23 +97,6 @@ context.addEventListener([
         }, 1000);
     }
 });
-
-const playerManager = context.getPlayerManager();
-
-// Listen and log all Core Events.
-playerManager.addEventListener(cast.framework.events.category.CORE,
-    event => {
-        console.log("Core event: " + event.type);
-        console.log(event);
-    }
-);
-
-playerManager.addEventListener(
-    cast.framework.events.EventType.MEDIA_STATUS, (event) => {
-        console.log("MEDIA_STATUS event: " + event.type);
-        console.log(event);
-    }
-);
 
 context.start();
 

@@ -1,24 +1,56 @@
+import { log } from "./logger.js";
+
 class Player {
     /**
-     * @param videoElem {HTMLVideoElement} video element to handle
+     * @param playerManager {cast.framework.PlayerManager} chromecast player manager
      */
-    constructor(videoElem) {
-        this.videoElem = videoElem;
+    constructor(playerManager) {
+        this.playerManager = playerManager;
+
+        this.playerManager.addEventListener(cast.framework.events.category.CORE, this.onCoreEvent)
+        this.playerManager.addEventListener(cast.framework.events.EventType.MEDIA_STATUS, this.onMediaStatusChanged)
+
+        // As suggested by chromecast guide:
+        const playerData = {};
+        const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
+
+        // Update ui according to player state
+        playerDataBinder.addEventListener(cast.framework.ui.PlayerDataEventType.STATE_CHANGED, this.onPlayerDataChanged);
     }
 
     /**
-     * @type HTMLVideoElement
+     * @type cast.framework.PlayerManager
      */
-    videoElem = null;
+    playerManager = null;
+
+    videoName = null;
 
     /**
-     * @type {(videoName: string) => void}
+     * @type {(videoName: string, autoplay = false) => void}
      * @param {string} videoName - All videos must be in assets/video
+     * @param {boolean} autoplay - Default false
      */
-    load = (videoName) => {
+    load = (videoName, autoplay = false) => {
         try {
             const src = `assets/video/${videoName}`;
-            this.videoElem.src = src;
+            log(() => `loading in playermanager: ${src}`);
+
+            /**
+             * @type {cast.framework.messages.LoadRequestData}
+             */
+            const loadRequestData = {
+                autoplay: autoplay,
+                media: {
+                    contentId: src,
+                    streamType: 'BUFFERED',
+                    contentType: 'video/webm',
+                    metadata: {
+                        title: ''
+                    }
+                }
+            };
+            this.playerManager.load(loadRequestData);
+            this.videoName = videoName;
         } catch (error) {
             console.error(error);
         }
@@ -26,8 +58,13 @@ class Player {
 
     play = () => {
         try {
-            const promise = this.videoElem.play();
-            if (promise) promise.catch(error => console.error(error));
+            if (isNaN(this.playerManager.getDurationSec())) {
+                // the player has been stopped, then I reload the video
+                this.load(this.videoName, true);
+            }
+            else {
+                this.playerManager.play();
+            }
         } catch (error) {
             console.error(error);
         }
@@ -35,8 +72,7 @@ class Player {
 
     pause = () => {
         try {
-            const promise = this.videoElem.pause();
-            if (promise) promise.catch(error => console.error(error));
+            this.playerManager.pause();
         } catch (error) {
             console.error(error);
         }
@@ -44,12 +80,34 @@ class Player {
 
     stop = () => {
         try {
-            const promise = this.videoElem.pause();
-            this.videoElem.currentTime = 0;
-            if (promise) promise.catch(error => console.error(error));
+            this.playerManager.stop();
         } catch (error) {
             console.error(error);
         }
+    }
+
+    /**
+     * @type {EventHandler}
+     */
+    onCoreEvent = (event) => {
+        log(() => `Core event: ${event.type}`);
+        // log(() => event);
+    }
+
+    /**
+     * @type {EventHandler}
+     */
+    onMediaStatusChanged = (event) => {
+        log(() => `MEDIA_STATUS event: ${event.type}`);
+        // log(() => event);
+    }
+
+    /**
+     * @type {PlayerDataChangedEventHandler}
+     */
+    onPlayerDataChanged = (event) => {
+        log(() => `PlayerDataChanged: ${event.value}`);
+        log(() => event);
     }
 }
 

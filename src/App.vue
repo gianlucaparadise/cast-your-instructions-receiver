@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <SplashScreen :isReady="isReady" />
-    <HelloWorld v-if="!isLoading" msg="Welcome to Your Vue.js App" />
+    <HelloWorld v-if="isReady" msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
     SplashScreen
   },
   mounted() {
+    // This is to test locally
     setTimeout(() => {
       this.isReady = true;
     }, 1500);

@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <SplashScreen :isReady="isReady" />
-    <HelloWorld v-if="isReady" msg="Welcome to Your Vue.js App" />
+    <InstructionsScreen v-if="isReady" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import InstructionsScreen from "./components/instructions/InstructionsScreen.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 
 export default {
@@ -15,7 +15,7 @@ export default {
     isReady: false
   }),
   components: {
-    HelloWorld,
+    InstructionsScreen,
     SplashScreen
   },
   mounted() {
@@ -28,12 +28,22 @@ export default {
 </script>
 
 <style>
+html {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  background-color: black;
+  color: white;
+}
+
 #app {
+  height: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  margin-top: 60px;
 }
 </style>

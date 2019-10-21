@@ -1,0 +1,109 @@
+<template>
+  <div id="main">
+    <div id="col-1" class="container">
+      <div id="instructions" class="container">
+        <h1>Instructions list</h1>
+      </div>
+
+      <div id="description" class="container">
+        <h2>selectedDescription</h2>
+      </div>
+
+      <div id="duration" class="container">
+        <h3>selectedDuration</h3>
+      </div>
+    </div>
+
+    <div class="line vertical"></div>
+
+    <div id="col-2" class="container">
+      <div id="countdown" class="container">
+        <h1>Countdown</h1>
+      </div>
+
+      <div class="line horizontal"></div>
+
+      <div id="video" class="container">
+        <h1>Video</h1>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "InstructionsScreen"
+};
+</script>
+
+<style scoped>
+h1,
+h2 {
+  text-align: center;
+}
+
+#main {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+}
+
+#main > div.container {
+  max-width: 50%;
+  width: 50%;
+}
+
+#col-1 {
+  display: flex;
+  flex-direction: column;
+}
+
+#description {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 50px;
+}
+
+#duration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 50px;
+  font-style: italic;
+}
+
+#col-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+#col-2 > div.container {
+  max-height: 50%;
+  height: 50%;
+}
+
+#countdown {
+  display: flex;
+  flex-direction: column;
+}
+
+div#video {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  background-color: white;
+}
+
+.line.vertical {
+  width: 10px;
+}
+
+.line.horizontal {
+  height: 10px;
+}
+</style>

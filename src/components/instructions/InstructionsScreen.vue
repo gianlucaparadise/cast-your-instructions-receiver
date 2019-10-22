@@ -17,9 +17,7 @@
     <div class="line vertical"></div>
 
     <div id="col-2" class="container">
-      <div id="countdown" class="container">
-        <h1>Countdown</h1>
-      </div>
+      <Countdown class="container" :countdownTime="0" />
 
       <div class="line horizontal"></div>
 
@@ -31,8 +29,13 @@
 </template>
 
 <script>
+import Countdown from "./CountdownComponent.vue";
+
 export default {
-  name: "InstructionsScreen"
+  name: "InstructionsScreen",
+  components: {
+    Countdown,
+  }
 };
 </script>
 
@@ -82,11 +85,6 @@ h2 {
 #col-2 > div.container {
   max-height: 50%;
   height: 50%;
-}
-
-#countdown {
-  display: flex;
-  flex-direction: column;
 }
 
 div#video {

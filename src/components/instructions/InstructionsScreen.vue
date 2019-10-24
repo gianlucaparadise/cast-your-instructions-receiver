@@ -1,9 +1,7 @@
 <template>
   <div id="main">
     <div id="col-1" class="container">
-      <div id="instructions" class="container">
-        <h1>Instructions list</h1>
-      </div>
+      <InstructionList class="container" title="Selected routine" />
 
       <div id="description" class="container">
         <h2>selectedDescription</h2>
@@ -30,11 +28,13 @@
 
 <script>
 import Countdown from "./CountdownComponent.vue";
+import InstructionList from "./InstructionListComponent.vue";
 
 export default {
   name: "InstructionsScreen",
   components: {
     Countdown,
+    InstructionList
   }
 };
 </script>

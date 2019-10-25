@@ -3,13 +3,11 @@
     <div id="col-1" class="container">
       <InstructionList class="container" title="Selected routine" />
 
-      <div id="description" class="container">
-        <h2>selectedDescription</h2>
-      </div>
-
-      <div id="duration" class="container">
-        <h3>selectedDuration</h3>
-      </div>
+      <Step
+        class="container expand"
+        description="Selected description"
+        duration="Selected duration"
+      />
     </div>
 
     <div class="line vertical"></div>
@@ -29,12 +27,14 @@
 <script>
 import Countdown from "./CountdownComponent.vue";
 import InstructionList from "./InstructionListComponent.vue";
+import Step from "./StepComponent.vue";
 
 export default {
   name: "InstructionsScreen",
   components: {
     Countdown,
-    InstructionList
+    InstructionList,
+    Step
   }
 };
 </script>
@@ -56,25 +56,13 @@ h2 {
   width: 50%;
 }
 
+.container.expand {
+  flex-grow: 1;
+}
+
 #col-1 {
   display: flex;
   flex-direction: column;
-}
-
-#description {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 50px;
-}
-
-#duration {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 50px;
-  font-style: italic;
 }
 
 #col-2 {

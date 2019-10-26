@@ -17,9 +17,7 @@
 
       <div class="line horizontal"></div>
 
-      <div id="video" class="container">
-        <h1>Video</h1>
-      </div>
+      <Video class="container" />
     </div>
   </div>
 </template>
@@ -28,23 +26,20 @@
 import Countdown from "./CountdownComponent.vue";
 import InstructionList from "./InstructionListComponent.vue";
 import Step from "./StepComponent.vue";
+import Video from "./VideoComponent.vue";
 
 export default {
   name: "InstructionsScreen",
   components: {
     Countdown,
     InstructionList,
-    Step
+    Step,
+    Video
   }
 };
 </script>
 
 <style scoped>
-h1,
-h2 {
-  text-align: center;
-}
-
 #main {
   display: flex;
   height: 100%;
@@ -73,12 +68,6 @@ h2 {
 #col-2 > div.container {
   max-height: 50%;
   height: 50%;
-}
-
-div#video {
-  position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 .line {

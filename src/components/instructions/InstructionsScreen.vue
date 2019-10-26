@@ -3,7 +3,7 @@
     <div id="col-1" class="container">
       <InstructionList class="container" title="Selected routine" />
 
-      <Step
+      <StepDemonstrator
         class="container expand"
         description="Selected description"
         duration="Selected duration"
@@ -25,7 +25,7 @@
 <script>
 import Countdown from "./CountdownComponent.vue";
 import InstructionList from "./InstructionListComponent.vue";
-import Step from "./StepComponent.vue";
+import StepDemonstrator from "./StepDemonstratorComponent.vue";
 import Video from "./VideoComponent.vue";
 
 export default {
@@ -33,7 +33,7 @@ export default {
   components: {
     Countdown,
     InstructionList,
-    Step,
+    StepDemonstrator,
     Video
   }
 };

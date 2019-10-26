@@ -1,6 +1,6 @@
 <template>
   <div id="countdown">
-    <h1>Countdown</h1>
+    <h1 class="title">Countdown</h1>
     <span id="countdownTime">{{ countdownTime }}</span>
   </div>
 </template>
@@ -15,11 +15,6 @@ export default {
 </script>
 
 <style scoped>
-h1,
-h2 {
-  text-align: center;
-}
-
 #countdown {
   display: flex;
   flex-direction: column;

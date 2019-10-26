@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "Step",
+  name: "StepDemonstrator",
   props: {
     description: String,
     duration: String

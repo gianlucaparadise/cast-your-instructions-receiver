@@ -1,6 +1,6 @@
 <template>
   <div id="instructions">
-    <h1>{{ title }}</h1>
+    <h1 class="title">{{ title }}</h1>
 
     <ol>
       <li>Step one</li>
@@ -20,11 +20,6 @@ export default {
 </script>
 
 <style scoped>
-h1,
-h2 {
-  text-align: center;
-}
-
 .selected {
   color: red;
   font-weight: bold;

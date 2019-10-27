@@ -6,12 +6,16 @@
 </template>
 
 <script>
+import "./types";
 import InstructionsScreen from "./components/instructions/InstructionsScreen.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 import { routine as stubbedRoutine } from "./assets/stub/stub-instructions.js";
 
 const store = {
   state: {
+    /**
+     * @type {Routine}
+     */
     routine: null
   }
 };

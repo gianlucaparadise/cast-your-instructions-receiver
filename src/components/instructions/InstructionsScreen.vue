@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import "../../types";
 import Countdown from "./CountdownComponent.vue";
 import InstructionList from "./InstructionListComponent.vue";
 import StepDemonstrator from "./StepDemonstratorComponent.vue";
@@ -31,24 +32,33 @@ import Video from "./VideoComponent.vue";
 export default {
   name: "InstructionsScreen",
   props: {
+    /**
+     * @type {Routine}
+     */
     routine: {}
   },
   computed: {
     title: function() {
+      /**
+       * @type {Routine}
+       */
       const routine = this.routine;
       if (!routine) {
         return "";
       }
 
-      return this.routine.title;
+      return routine.title;
     },
     instructions: function() {
+      /**
+       * @type {Routine}
+       */
       const routine = this.routine;
       if (!routine) {
-        return "";
+        return [];
       }
 
-      return this.routine.instructions;
+      return routine.instructions;
     }
   },
   components: {

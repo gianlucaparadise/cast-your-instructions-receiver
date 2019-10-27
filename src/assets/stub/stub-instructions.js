@@ -1,3 +1,8 @@
+import "../../types"
+
+/**
+ * @type {Routine}
+ */
 const routine = {
     title: 'How to cook pasta',
     source: 'https://blog.giallozafferano.it/paola67/how-to-cook-pasta/',

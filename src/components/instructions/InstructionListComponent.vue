@@ -9,12 +9,19 @@
 </template>
 
 <script>
+import "../../types";
 import StepItem from "./StepItemComponent.vue";
 
 export default {
   name: "InstructionList",
   props: {
+    /**
+     * @type {String}
+     */
     title: String,
+    /**
+     * @type {Step[]}
+     */
     instructions: Array
   },
   components: {

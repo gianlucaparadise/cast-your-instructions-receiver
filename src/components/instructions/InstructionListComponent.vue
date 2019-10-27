@@ -3,9 +3,7 @@
     <h1 class="title">{{ title }}</h1>
 
     <ol>
-      <StepItem name="Step one" />
-      <StepItem name="Step two" :selected="true" />
-      <StepItem name="Step three" />
+      <StepItem v-for="(step) in instructions" :key="step.name" :name="step.name" />
     </ol>
   </div>
 </template>
@@ -16,7 +14,8 @@ import StepItem from "./StepItemComponent.vue";
 export default {
   name: "InstructionList",
   props: {
-    title: String
+    title: String,
+    instructions: Array
   },
   components: {
     StepItem

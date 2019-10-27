@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <div id="col-1" class="container">
-      <InstructionList class="container" title="Selected routine" />
+      <InstructionList class="container" :title="title" :instructions="instructions" />
 
       <StepDemonstrator
         class="container expand"
@@ -30,6 +30,27 @@ import Video from "./VideoComponent.vue";
 
 export default {
   name: "InstructionsScreen",
+  props: {
+    routine: {}
+  },
+  computed: {
+    title: function() {
+      const routine = this.routine;
+      if (!routine) {
+        return "";
+      }
+
+      return this.routine.title;
+    },
+    instructions: function() {
+      const routine = this.routine;
+      if (!routine) {
+        return "";
+      }
+
+      return this.routine.instructions;
+    }
+  },
   components: {
     Countdown,
     InstructionList,

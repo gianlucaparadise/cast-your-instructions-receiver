@@ -24,6 +24,8 @@
 
 <script>
 import "../../types";
+// import { log } from "./../../logger";
+import { store } from "./InstructionsStore";
 import Countdown from "./CountdownComponent.vue";
 import InstructionList from "./InstructionListComponent.vue";
 import StepDemonstrator from "./StepDemonstratorComponent.vue";
@@ -31,18 +33,15 @@ import Video from "./VideoComponent.vue";
 
 export default {
   name: "InstructionsScreen",
-  props: {
-    /**
-     * @type {Routine}
-     */
-    routine: {}
-  },
+  data: () => ({
+    state: store.state
+  }),
   computed: {
     title: function() {
       /**
        * @type {Routine}
        */
-      const routine = this.routine;
+      const routine = this.state.routine;
       if (!routine) {
         return "";
       }
@@ -53,13 +52,18 @@ export default {
       /**
        * @type {Routine}
        */
-      const routine = this.routine;
+      const routine = this.state.routine;
       if (!routine) {
         return [];
       }
 
       return routine.instructions;
     }
+  },
+  methods: {
+    // setListener: function(delegate) {
+    //   listener = delegate;
+    // }
   },
   components: {
     Countdown,

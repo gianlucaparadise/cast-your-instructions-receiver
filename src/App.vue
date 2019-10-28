@@ -1,24 +1,17 @@
 <template>
   <div id="app">
     <SplashScreen :isReady="isReady" />
-    <InstructionsScreen v-if="isReady" :routine="routine" />
+    <InstructionsScreen v-if="isReady" />
   </div>
 </template>
 
 <script>
 import "./types";
+import { log } from "./logger";
+import { store } from "./components/instructions/InstructionsStore";
 import InstructionsScreen from "./components/instructions/InstructionsScreen.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 import { routine as stubbedRoutine } from "./assets/stub/stub-instructions.js";
-
-const store = {
-  state: {
-    /**
-     * @type {Routine}
-     */
-    routine: null
-  }
-};
 
 export default {
   name: "app",
@@ -26,9 +19,6 @@ export default {
     state: store.state
   }),
   computed: {
-    routine: function() {
-      return this.state.routine;
-    },
     isReady: function() {
       return Boolean(this.state.routine);
     }
@@ -40,7 +30,8 @@ export default {
   mounted() {
     // This is to test locally
     setTimeout(() => {
-      store.state.routine = stubbedRoutine;
+      log(() => "Loading stub routine");
+      store.load(stubbedRoutine);
     }, 1500);
   }
 };

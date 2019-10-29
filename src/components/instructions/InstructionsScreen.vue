@@ -5,15 +5,15 @@
 
       <StepDemonstrator
         class="container expand"
-        description="Selected description"
-        duration="Selected duration"
+        :description="selectedDescription"
+        :duration="selectedDuration"
       />
     </div>
 
     <div class="line vertical"></div>
 
     <div id="col-2" class="container">
-      <Countdown class="container" :countdownTime="0" />
+      <Countdown class="container" :countdownTime="countdownTime" />
 
       <div class="line horizontal"></div>
 
@@ -58,6 +58,50 @@ export default {
       }
 
       return routine.instructions;
+    },
+    selectedDescription: function() {
+      /**
+       * @type {Step}
+       */
+      const selectedStep = store.getSelectedStep();
+      if (!selectedStep) {
+        return "";
+      }
+
+      return selectedStep.description;
+    },
+    selectedDuration: function() {
+      /**
+       * @type {Step}
+       */
+      const selectedStep = store.getSelectedStep();
+      if (!selectedStep) {
+        return "";
+      }
+
+      return `${selectedStep.countdown} seconds`;
+    },
+    selectedVideoUrl: function() {
+      /**
+       * @type {Step}
+       */
+      const selectedStep = store.getSelectedStep();
+      if (!selectedStep) {
+        return "";
+      }
+
+      return selectedStep.videoUrl;
+    },
+    countdownTime: function() {
+      /**
+       * @type {Number}
+       */
+      const countdownTime = this.state.countdownTime;
+      if (countdownTime < 0) {
+        return 0;
+      }
+
+      return countdownTime;
     }
   },
   methods: {

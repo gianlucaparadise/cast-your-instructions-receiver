@@ -32,6 +32,11 @@ export default {
     setTimeout(() => {
       log(() => "Loading stub routine");
       store.load(stubbedRoutine);
+
+      setTimeout(() => {
+        log(() => "Playing");
+        store.play();
+      }, 2000);
     }, 1500);
   }
 };

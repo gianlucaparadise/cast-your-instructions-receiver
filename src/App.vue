@@ -8,6 +8,7 @@
 <script>
 import "./types";
 import { log } from "./logger";
+import { delay } from "./utils";
 import { store } from "./components/instructions/InstructionsStore";
 import InstructionsScreen from "./components/instructions/InstructionsScreen.vue";
 import SplashScreen from "./components/SplashScreen.vue";
@@ -23,21 +24,39 @@ export default {
       return Boolean(this.state.routine);
     }
   },
+  watch: {
+    "state.presentationState": {
+      deep: true,
+      handler(val) {
+        log(() => `on presentationState change: ${val}`);
+      }
+    },
+    "state.selectedStepIndex": {
+      deep: true,
+      handler(val) {
+        if (val < 0) {
+          // When val is -1 I skip it because it's just a state change
+          return;
+        }
+        log(() => `on selected instruction: ${val}`);
+      }
+    }
+  },
   components: {
     InstructionsScreen,
     SplashScreen
   },
-  mounted() {
+  async mounted() {
     // This is to test locally
-    setTimeout(() => {
-      log(() => "Loading stub routine");
-      store.load(stubbedRoutine);
+    await delay(1500);
 
-      setTimeout(() => {
-        log(() => "Playing");
-        store.play();
-      }, 2000);
-    }, 1500);
+    log(() => "Loading stub routine");
+    store.load(stubbedRoutine);
+
+    await delay(2000);
+
+    log(() => "Playing");
+    store.play();
   }
 };
 </script>

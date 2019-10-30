@@ -1,3 +1,4 @@
+import "./types"
 import { log } from "../../logger";
 
 /**
@@ -13,6 +14,8 @@ const store = {
         routine: null,
         selectedStepIndex: -1,
         countdownTime: -1,
+        /** @type {PresentationState} */
+        presentationState: "IDLE"
     },
 
     getSelectedStep: function () {
@@ -40,7 +43,7 @@ const store = {
         if (countdownInterval) clearInterval(countdownInterval);
 
         this.state.routine = routine;
-        // if (listener) listener.onSendState('LOADED', routine);
+        this.state.presentationState = "LOADED";
     },
     play: function () {
         const routine = this.state.routine;
@@ -51,8 +54,8 @@ const store = {
         log(() => `Playing routine:`);
         log(() => routine);
 
+        this.state.presentationState = "PLAYED"
         this.nextStep();
-        // if (listener) listener.onSendState('PLAYED', this.state.routine);
     },
     pause: function () {
         const routine = this.state.routine;
@@ -64,7 +67,7 @@ const store = {
         log(() => routine);
 
         if (countdownInterval) clearInterval(countdownInterval);
-        // if (listener) listener.onSendState('PAUSED', this.state.routine);
+        this.state.presentationState = "PAUSED"
     },
     stop: function () {
         log(() => `Stopping`);
@@ -72,7 +75,8 @@ const store = {
         this.state.selectedStepIndex = -1;
         this.state.countdownTime = -1;
         if (countdownInterval) clearInterval(countdownInterval);
-        // if (listener) listener.onSendState('STOPPED', this.state.routine);
+
+        this.state.presentationState = "STOPPED"
     },
 
     nextStep: function () {
@@ -90,7 +94,7 @@ const store = {
 
         log(() => 'increasing step');
         this.state.selectedStepIndex += 1;
-        // if (listener) listener.onSelectedInstruction(this.state.routine, this.state.selectedStepIndex);
+        // I don't need a new presentation state change because the app is watching selectedStepIndex prop change
 
         this.startCountdown();
 

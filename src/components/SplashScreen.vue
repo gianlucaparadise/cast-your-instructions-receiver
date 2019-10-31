@@ -17,6 +17,7 @@ export default {
 <style scoped>
 .splash {
   background-color: #000000;
+  z-index: 100;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

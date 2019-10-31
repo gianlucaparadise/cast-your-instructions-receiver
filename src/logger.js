@@ -7,6 +7,11 @@ const log = (getLogContent) => {
     }
 }
 
+const error = (getErrorLogContent) => {
+    console.error(getErrorLogContent());
+}
+
 export {
-    log
+    log,
+    error
 }

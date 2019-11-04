@@ -16,7 +16,6 @@ import { CastReceiver } from "./cast/receiver";
 import { Player } from "./cast/player";
 import InstructionsScreen from "./components/instructions/InstructionsScreen.vue";
 import SplashScreen from "./components/SplashScreen.vue";
-// import { routine as stubbedRoutine } from "./assets/stub/stub-instructions.js";
 
 /** @type {import('./cast/receiver').CastReceiverListener} */
 const receiverListener = {
@@ -114,13 +113,18 @@ export default {
     SplashScreen
   },
   async mounted() {
-    // // This is to test locally
-    // await delay(1500);
-    // log(() => "Loading stub routine");
-    // receiverListener.onSenderEvent("LOAD", stubbedRoutine);
-    // await delay(2000);
-    // log(() => "Playing");
-    // receiverListener.onSenderEvent("PLAY", stubbedRoutine);
+    // This is to test locally
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("env") === "stub") {
+      const stub = require("./assets/stub/stub-instructions.js");
+      const stubbedRoutine = stub.routine;
+      await delay(1500);
+      log(() => "Loading stub routine");
+      receiverListener.onSenderEvent("LOAD", stubbedRoutine);
+      await delay(2000);
+      log(() => "Playing");
+      receiverListener.onSenderEvent("PLAY", stubbedRoutine);
+    }
   }
 };
 </script>
